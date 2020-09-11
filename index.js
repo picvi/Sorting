@@ -13,7 +13,7 @@ const Person = function ()  {
 
 const people = [];
 
-for (let i = 0; i < 30; i++) {
+for (let i = 0; i < 100; i += 1) {
     let person = new Person();
     people.push(person);
 };
@@ -32,7 +32,8 @@ const bubbleSortAscending = (array, description, description2, description3) => 
                 if (array[i][description2] > array[i + 1][description2]) {
                     swap(i);
                 } continue;
-            } else if (array[i][description2] === array[i + 1][description2]) {
+            } else if (array[i][description] === array[i + 1][description] && 
+                array[i][description2] === array[i + 1][description2]) {
                 if (array[i][description3] > array[i + 1][description3]) {
                     swap(i);
                 } continue;
@@ -55,7 +56,8 @@ const bubbleSortDescending = (array, description, description2, description3) =>
                 if (array[i][description2] < array[i + 1][description2]) {
                     swap(i);
                 } continue;
-            } else if (array[i][description2] === array[i + 1][description2]) {
+            } else if (array[i][description] === array[i + 1][description] && 
+                array[i][description2] === array[i + 1][description2]) {
                 if (array[i][description3] < array[i + 1][description3]) {
                     swap(i);
                 } continue;
@@ -65,12 +67,13 @@ const bubbleSortDescending = (array, description, description2, description3) =>
 }
 
 
-bubbleSortDescending(people, 'surname', 'name', 'middleName');
+bubbleSortAscending(people, 'surname', 'name', 'middleName');
 // bubbleSortAscending(people, 'name', 'surname', 'middleName');
 // bubbleSortDescending(people, 'middleName', 'surname', 'name');
 
+// bubbleSortDescending(people, 'surname');
 
-for (i = 0; i < people.length; i++) {
+for (i = 0; i < people.length; i += 1) {
     console.log(people[i]);
 };
 
