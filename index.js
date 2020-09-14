@@ -3,99 +3,58 @@ const surnames = ["Smith", "Johnson", "Williams", "Miller", "Thomas", "Jackson",
 const middleNames = ["Mae", "Lee", "Edward", "Avery", "Riley", "Parkel", "Peyton", "Quinn", "Reeze", "Rowan" ];
 
 const getRandom = (array) => array[Math.floor(Math.random() * array.length)]; 
+const getRandomDate = (x, y) => Math.floor(Math.random() * (x - y) + y);
 
-const Person = function ()  {
-    this.name = getRandom(names),
-    this.middleName = getRandom(middleNames),
-    this.surname = getRandom(surnames)
-    this.birthDate = Math.floor(Math.random() * (90 - 10)) + 10; 
-};
+const createPerson = () => ({
+    name: getRandom(names),
+    middleName: getRandom(middleNames),
+    surname: getRandom(surnames),
+    birthDate: new Date(getRandomDate(1950, 2020), getRandomDate(11, 0), getRandomDate(30, 1))
+});
 
 const people = [];
 
-for (let i = 0; i < 100; i += 1) {
-    let person = new Person();
+for (let i = 0; i < 10; i += 1) {
+    let person = createPerson();
     people.push(person);
 };
 
-const bubbleSortAscending = (array, description, description2, description3) => {
-    let swap = (i) => {
-        let position = array[i];
-        array[i] = array[i + 1];
-        array[i + 1] = position;
-    }
-    for (let j = 0; j < array.length - 1; j += 1) {
-        for (let i = 0; i < array.length - 1; i += 1) {
-            if (array[i][description] > array[i + 1][description]) {
-                swap(i);
-            } else if (array[i][description] === array[i + 1][description]) {
-                if (array[i][description2] > array[i + 1][description2]) {
-                    swap(i);
-                } continue;
-            } else if (array[i][description] === array[i + 1][description] && 
-                array[i][description2] === array[i + 1][description2]) {
-                if (array[i][description3] > array[i + 1][description3]) {
-                    swap(i);
-                } continue;
-            }
+const comparePerson = (a, b) => {
+    if (a.name == b.name) {
+        if (a.middleName == b.middleName) {
+            return a.surname < b.surname ? -1 : 1;
         }
-    }        
-}
-
-const bubbleSortDescending = (array, description, description2, description3) => {
-    let swap = (i) => {
-        let position = array[i];
-        array[i] = array[i + 1];
-        array[i + 1] = position;
+        return a.middleName < b.middleName ? -1 : 1;
     }
-    for (let j = 0; j < array.length - 1; j += 1) {
-        for (let i = 0; i < array.length - 1; i += 1) {
-            if (array[i][description] < array[i + 1][description]) {
-                swap(i);
-            } else if (array[i][description] === array[i + 1][description]) {
-                if (array[i][description2] < array[i + 1][description2]) {
-                    swap(i);
-                } continue;
-            } else if (array[i][description] === array[i + 1][description] && 
-                array[i][description2] === array[i + 1][description2]) {
-                if (array[i][description3] < array[i + 1][description3]) {
-                    swap(i);
-                } continue;
-            }
-        }
-    }        
-}
-
-
-bubbleSortAscending(people, 'surname', 'name', 'middleName');
-// bubbleSortAscending(people, 'name', 'surname', 'middleName');
-// bubbleSortDescending(people, 'middleName', 'surname', 'name');
-
-// bubbleSortDescending(people, 'surname');
-
-for (i = 0; i < people.length; i += 1) {
-    console.log(people[i]);
+    return a.name < b.name ? -1 : 1
 };
 
-const age = (array) => {
-    let sumAge = 0;
-    let ages = [];
-    
-    for (let i = 0; i < array.length; i += 1) {
-        sumAge += array[i].birthDate;
-        ages.push(array[i].birthDate);
-        
-    }
-    const average = Math.round(sumAge / people.length); 
-    
-    max = Math.max.apply(null, ages);
-    min = Math.min.apply(null, ages);
+const compareAge = (a, b) => a.birthDate < b.birthDate ? -1 : 1;
 
-    return {
-        averageAge : average,
-        minAge : min,
-        maxAge : max,
-    }
+const bubbleSortAscending = (array, compare, direction) => {
+      for (let j = 0; j < array.length - 1; j += 1) {
+        for (let i = 0; i < array.length - 1; i += 1) {
+            if (compare(array[i], array[i + 1]) === direction) {
+                let position = array[i];
+                array[i] = array[i + 1];
+                array[i + 1] = position;
+            } 
+        }
+    }        
 }
 
-console.log(age(people));
+bubbleSortAscending(people, compareAge, -1);
+
+people.forEach((element) => console.log(element));
+
+const getAge = (i) => Math.abs(new Date(Date.now() - people[i].birthDate).getUTCFullYear() - 1970);
+
+let age = 0;
+let counter = 0;
+
+for (let i = 0; i < people.length; i++) {
+    age += getAge(i);
+    counter++;
+}
+
+console.log(`Average age is ${Math.round(age / counter)}`);
