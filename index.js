@@ -31,7 +31,7 @@ const comparePerson = (a, b) => {
 
 const compareAge = (a, b) => a.birthDate < b.birthDate ? -1 : 1;
 
-const bubbleSortAscending = (array, compare, direction) => {
+const bubbleSort = (array, compare, direction) => {
       for (let j = 0; j < array.length - 1; j += 1) {
         for (let i = 0; i < array.length - 1; i += 1) {
             if (compare(array[i], array[i + 1]) === direction) {
@@ -43,18 +43,12 @@ const bubbleSortAscending = (array, compare, direction) => {
     }        
 }
 
-bubbleSortAscending(people, compareAge, -1);
-
+bubbleSort(people, compareAge, -1);
 people.forEach((element) => console.log(element));
 
 const getAge = (i) => Math.abs(new Date(Date.now() - people[i].birthDate).getUTCFullYear() - 1970);
 
 let age = 0;
-let counter = 0;
 
-for (let i = 0; i < people.length; i++) {
-    age += getAge(i);
-    counter++;
-}
-
-console.log(`Average age is ${Math.round(age / counter)}`);
+people.forEach(function(birthDate, i, people) { age += getAge(i) });
+console.log(`Average age is ${Math.round(age / people.length)}`);
