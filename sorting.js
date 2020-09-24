@@ -71,7 +71,7 @@ const age = people.reduce((acc, people) => {
 console.log(`Average age is ${Math.round(age / people.length)}`);
 
 let edgeAge = people.
-    filter((person) => person.gender === gender[1])
+    filter((person) => person.surname === "Hill" && person.gender === gender[1])
     .reduce(
         (ageValue, person) => {
         return ageValue.age() > person.age() ? ageValue : person;
@@ -79,5 +79,4 @@ let edgeAge = people.
 
 console.log(edgeAge);
 
-console.log(people);
-
+console.log(people);         
