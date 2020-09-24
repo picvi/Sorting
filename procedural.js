@@ -25,8 +25,7 @@ function createEmployee(person, position) {
 function calculateAge(person) {
     now = new Date();
     let calculatedAge = 0;
-    personYear = person.birthDate.getFullYear();
-    currentYear = now.getFullYear()
+    
     if (now.getMonth() > person.birthDate.getMonth()) {
         calculatedAge = now.getFullYear() - person.birthDate.getFullYear();
     } else if ( person.birthDate.getMonth() === now.getMonth()) {
