@@ -72,8 +72,7 @@ const retirementAge = {
 function calculateAgeUntilRetirement(person, sex) {
     if (calculateAge(person) >= sex) {
         console.log(`You have been retired for ${calculateAge(person) - sex} years`);
-    } 
-    console.log(`Until retirement you have ${sex - calculateAge(person)} years`);
+    } else console.log(`Until retirement you have ${sex - calculateAge(person)} years`);
 };
 
 adressBook.filter((item) => item.person.sex === "female").forEach((employee) => {
