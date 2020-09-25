@@ -11,6 +11,11 @@ const retirementAge = {
     male: 63,
 };
 
+const sex = {
+    male: "male",
+    female: "female"
+};
+
 function Person(firstName, lastName, birthDate, sex) {
     this.firstName = firstName;
     this.lastName = lastName;
@@ -19,28 +24,19 @@ function Person(firstName, lastName, birthDate, sex) {
 
     this.age = function () {
         now = new Date();
-        let calculatedAge = 0;
-
-        if (now.getMonth() > this.birthDate.getMonth()) {
-            calculatedAge = now.getFullYear() - this.birthDate.getFullYear();
-        } else if ( this.birthDate.getMonth() === now.getMonth()) {
-            if (now.getDate() >= this.birthDate.getDate()) {
-                calculatedAge = now.getFullYear() - this.birthDate.getFullYear();
-            } else {
-                calculatedAge = (now.getFullYear() - this.birthDate.getFullYear()) - 1;
-            }
+        let calculatedAge = now.getFullYear() - this.birthDate.getFullYear();
+        
+        if (this.birthDate.getMonth() <= now.getMonth()) {
+        if (this.birthDate.getDate() >= now.getDate()){
+                return calculatedAge - 1;
         }
-        else {
-            calculatedAge = (now.getFullYear() - this.birthDate.getFullYear()) - 1;
-        }
+        };
 
         return calculatedAge;
     };
 
     this.ageUntilRetirement = function (retirementAgeBySex = retirementAge.female) {
-        if (this.age() >= retirementAgeBySex) {
-            console.log(`You have been retired for ${this.age() - retirementAgeBySex} years`);
-        } else console.log(`Until retirement you have ${retirementAgeBySex - this.age()} years`);
+        return Math.abs(this.age() - retirementAgeBySex);
     };
 
     this.print = function () {
@@ -48,10 +44,8 @@ function Person(firstName, lastName, birthDate, sex) {
         console.log(`Last Name: ${this.lastName}`);
         console.log(`Birth Date: ${this.birthDate}`);
         console.log(`Age: ${this.age()}`);
-        console.log(`Sex: ${this.sex}`);
-        
+        console.log(`Sex: ${this.sex}`);     
     };
-
 };
 
 function Employee(person, position) {
@@ -66,16 +60,18 @@ function Employee(person, position) {
 };
 
 const adressBook = [
-    new Employee(new Person("Tom", "Scavo", new Date(1980, 3, 15), "male"), positions.hr),
-    new Employee(new Person("Susan", "Mayer", new Date(1900, 8, 25), "female"), positions.salesManager),
-    new Employee(new Person("Andy", "Birsak", new Date(1970, 0, 1), "male"), positions.backend),
-    new Employee(new Person("Bonny", "Johnson", new Date(1999, 11, 28), "female"), positions.frontend),
-    new Employee(new Person("Lynette", "Scavo", new Date(1983, 7, 13), "female"), positions.pm),
+    new Employee(new Person("Tom", "Scavo", new Date(1980, 3, 15), sex.male), positions.hr),
+    new Employee(new Person("Susan", "Mayer", new Date(1900, 8, 25), sex.female), positions.salesManager),
+    new Employee(new Person("Andy", "Birsak", new Date(1970, 0, 1), sex.male), positions.backend),
+    new Employee(new Person("Bonny", "Johnson", new Date(1999, 11, 28), sex.female), positions.frontend),
+    new Employee(new Person("Lynette", "Scavo", new Date(1983, 7, 13), sex.female), positions.pm),
 
 ];
 
-adressBook.filter((item) => item.person.sex === "female").forEach((employee) => {
+adressBook.filter((item) => item.person.sex === sex.male).forEach((employee) => {
     employee.print();
-    employee.person.ageUntilRetirement(retirementAge.female);
+    employee.person.age() > retirementAge.male ? 
+    console.log(`You have been retired for ${employee.person.ageUntilRetirement(retirementAge.male)} years`) 
+    : console.log(`Until retirement you have ${employee.person.ageUntilRetirement(retirementAge.male)} years`);
     console.log("______________________");
 });
